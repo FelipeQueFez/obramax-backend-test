@@ -22,13 +22,14 @@ export class CatsController {
     return this.catsService.create(createCatDto);
   }
 
-  @Get(':id')
+  @Get()
+  @ApiOperation({ summary: 'Get all cats' })
   @ApiResponse({
     status: 200,
-    description: 'The found record',
+    description: 'The found records',
     type: Cat,
   })
-  async findOne(@Param('id') id: string): Promise<Cat> {
-    return this.catsService.findOne(id);
+  async fetchAll(): Promise<Cat[]> {
+    return this.catsService.fetchAll();
   }
 }

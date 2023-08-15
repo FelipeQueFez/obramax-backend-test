@@ -5,13 +5,14 @@ import * as firebase from 'firebase-admin';
 
 export abstract class ICatsService {
   abstract create(cat: CreateCatDto): Promise<Cat>;
-  abstract findOne(id: string): Promise<Cat>;
+  abstract fetchAll(): Promise<Cat[]>;
 }
 
 @Injectable()
 export class CatsFirebaseService implements ICatsService {
 
   private _catsCollection = firebase.firestore().collection('cats');
+  private _LIMIT_QUERY = 10;
 
   async create(cat: CreateCatDto): Promise<Cat> {
     try {
@@ -36,12 +37,24 @@ export class CatsFirebaseService implements ICatsService {
     }
   }
 
-  async findOne(id: string): Promise<Cat> {
+  async fetchAll(): Promise<Cat[]> {
     try {
 
-      const data = (await this._catsCollection.doc(id).get()).data();
+      const cats = (await this._catsCollection.limit(this._LIMIT_QUERY).get());
+      const result : Cat[] = [];
 
-      return Promise.resolve(data as Cat);
+      cats.forEach(element => {
+        const data = element.data();
+
+        result.push(Cat.fromJson({
+          id: element.id,
+          name: data.name,
+          age: data.age,
+          breed: data.breed,
+        }));
+      });
+
+      return Promise.resolve(result);
     } catch (error) {
       return Promise.reject(error);
     }
