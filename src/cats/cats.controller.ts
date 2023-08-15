@@ -5,7 +5,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CatsService } from './cats.service';
+import { ICatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { Cat } from './entities/cat.entity';
 
@@ -13,7 +13,7 @@ import { Cat } from './entities/cat.entity';
 @ApiTags('cats')
 @Controller('cats')
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(private readonly catsService: ICatsService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create cat' })
@@ -22,13 +22,14 @@ export class CatsController {
     return this.catsService.create(createCatDto);
   }
 
-  @Get(':id')
+  @Get()
+  @ApiOperation({ summary: 'Get all cats' })
   @ApiResponse({
     status: 200,
-    description: 'The found record',
+    description: 'The found records',
     type: Cat,
   })
-  findOne(@Param('id') id: string): Cat {
-    return this.catsService.findOne(+id);
+  async fetchAll(): Promise<Cat[]> {
+    return this.catsService.fetchAll();
   }
 }

@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Cat {
+  @ApiProperty({example: '123456'})
+  id: string;
+
   /**
    * The name of the Cat
    * @example Kitty
@@ -15,4 +18,8 @@ export class Cat {
     description: 'The breed of the Cat',
   })
   breed: string;
+
+  public static fromJson(value: any): Cat {
+    return JSON.parse(JSON.stringify(value));
+  }
 }
