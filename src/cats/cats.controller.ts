@@ -18,7 +18,7 @@ export class CatsController {
   @Post()
   @ApiOperation({ summary: 'Create cat' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-  async create(@Body() createCatDto: CreateCatDto): Promise<void> {
+  async create(@Body() createCatDto: CreateCatDto): Promise<Cat> {
     return this.catsService.create(createCatDto);
   }
 
