@@ -10,6 +10,9 @@
 - Access by [link](https://b563-2804-14c-110-89f6-99f1-b116-87ea-dc19.ngrok-free.app/api)
     - This access is done via [ngrok](https://ngrok.com/)
 
+## Node version used
+18.17.0
+
 ### Installation
 
 `npm install`
